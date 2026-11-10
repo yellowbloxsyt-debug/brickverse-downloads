@@ -1,5 +1,5 @@
 // Keeps Brickverse playable offline and loading instantly after the first visit.
-const C = 'brickverse-v1.14.0';
+const C = 'brickverse-v1.15.0';
 self.addEventListener('install', e => { e.waitUntil(caches.open(C).then(c => c.addAll(['/', '/index.html', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png'])).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== C).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {

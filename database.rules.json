@@ -1,0 +1,87 @@
+{
+ "rules": {
+  "rooms": {
+   "$room": {
+    ".read": "auth != null",
+    "$uid": {
+     ".write": "auth != null && auth.uid === $uid && !(root.child('bans').child(auth.uid).exists() && root.child('bans').child(auth.uid).child('until').val() > now)"
+    }
+   }
+  },
+  "users": {
+   "$uid": {
+    ".read": "auth != null && auth.uid === $uid",
+    ".write": "auth != null && auth.uid === $uid"
+   }
+  },
+  "usernames": {
+   ".read": "auth != null",
+   "$name": {
+    ".write": "auth != null && newData.val() === auth.uid && (!data.exists() || data.val() === auth.uid)"
+   }
+  },
+  "profiles": {
+   ".read": "auth != null",
+   "$uid": {
+    ".write": "auth != null && auth.uid === $uid"
+   }
+  },
+  "friends": {
+   ".read": "auth != null",
+   "$uid": {
+    ".write": "auth != null && auth.uid === $uid"
+   }
+  },
+  "bans": {
+   ".read": "auth != null",
+   ".write": "auth != null && auth.token.email === 'w_dev@players.brickverse.app'"
+  },
+  "kicks": {
+   ".read": "auth != null",
+   ".write": "auth != null && auth.token.email === 'w_dev@players.brickverse.app'"
+  },
+  "mutes": {
+   ".read": "auth != null",
+   ".write": "auth != null && auth.token.email === 'w_dev@players.brickverse.app'"
+  },
+  "announce": {
+   ".read": true,
+   ".write": "auth != null && auth.token.email === 'w_dev@players.brickverse.app'"
+  },
+  "gifts": {
+   "$uid": {
+    ".read": "auth != null && (auth.uid === $uid || auth.token.email === 'w_dev@players.brickverse.app')",
+    ".write": "auth != null && (auth.token.email === 'w_dev@players.brickverse.app' || (auth.uid === $uid && !newData.exists()))"
+   }
+  },
+  "official": {
+   ".read": true,
+   ".write": "auth != null && auth.token.email === 'w_dev@players.brickverse.app'"
+  },
+  "games": {
+   "list": {
+    ".read": true,
+    "$id": {
+     ".write": "auth != null && ((!(root.child('bans').child(auth.uid).exists() && root.child('bans').child(auth.uid).child('until').val() > now) && (!data.exists() || data.child('uid').val() === auth.uid)) || auth.token.email === 'w_dev@players.brickverse.app')",
+     ".validate": "newData.hasChildren(['name','uid','updated']) && (newData.child('uid').val() === auth.uid || (data.exists() && newData.child('uid').val() === data.child('uid').val())) && newData.child('name').isString() && newData.child('name').val().length <= 60 && (!newData.child('desc').exists() || (newData.child('desc').isString() && newData.child('desc').val().length <= 500)) && (!newData.child('thumb').exists() || (newData.child('thumb').isString() && newData.child('thumb').val().length < 40000)) && $id.length <= 64"
+    }
+   },
+   "data": {
+    "$id": {
+     ".read": true,
+     ".write": "auth != null && ((!(root.child('bans').child(auth.uid).exists() && root.child('bans').child(auth.uid).child('until').val() > now) && (!data.exists() || data.child('uid').val() === auth.uid)) || auth.token.email === 'w_dev@players.brickverse.app')",
+     ".validate": "newData.hasChildren(['uid','data']) && (newData.child('uid').val() === auth.uid || (data.exists() && newData.child('uid').val() === data.child('uid').val())) && newData.child('data').isString() && newData.child('data').val().length < 4000000"
+    }
+   },
+   "visits": {
+    ".read": true,
+    "$id": {
+     "$k": {
+      ".write": "auth != null && newData.exists() && $id.length <= 64 && $k.length <= 10",
+      ".validate": "newData.isNumber() && newData.val() === (data.exists() ? data.val() : 0) + 1"
+     }
+    }
+   }
+  }
+ }
+}
