@@ -63,7 +63,7 @@
     ".read": true,
     "$id": {
      ".write": "auth != null && ((!(root.child('bans').child(auth.uid).exists() && root.child('bans').child(auth.uid).child('until').val() > now) && (!data.exists() || data.child('uid').val() === auth.uid)) || auth.token.email === 'w_dev@players.brickverse.app')",
-     ".validate": "newData.hasChildren(['name','uid','updated']) && (newData.child('uid').val() === auth.uid || (data.exists() && newData.child('uid').val() === data.child('uid').val())) && newData.child('name').isString() && newData.child('name').val().length <= 60 && (!newData.child('desc').exists() || (newData.child('desc').isString() && newData.child('desc').val().length <= 500)) && (!newData.child('thumb').exists() || (newData.child('thumb').isString() && newData.child('thumb').val().length < 40000)) && $id.length <= 64"
+     ".validate": "newData.hasChildren(['name','uid','updated']) && (newData.child('uid').val() === auth.uid || (data.exists() && newData.child('uid').val() === data.child('uid').val())) && newData.child('name').isString() && newData.child('name').val().length <= 60 && (!newData.child('desc').exists() || (newData.child('desc').isString() && newData.child('desc').val().length <= 500)) && (!newData.child('thumb').exists() || (newData.child('thumb').isString() && newData.child('thumb').val().length < 40000)) && $id.length <= 64 && (!newData.child('banner').exists() || newData.child('banner').isBoolean())"
     }
    },
    "data": {
@@ -80,6 +80,13 @@
       ".write": "auth != null && newData.exists() && $id.length <= 64 && $k.length <= 10",
       ".validate": "newData.isNumber() && newData.val() === (data.exists() ? data.val() : 0) + 1"
      }
+    }
+   },
+   "banner": {
+    "$id": {
+     ".read": true,
+     ".write": "auth != null && ((!(root.child('bans').child(auth.uid).exists() && root.child('bans').child(auth.uid).child('until').val() > now) && (!data.exists() || data.child('uid').val() === auth.uid)) || auth.token.email === 'w_dev@players.brickverse.app')",
+     ".validate": "newData.hasChildren(['uid','img']) && (newData.child('uid').val() === auth.uid || (data.exists() && newData.child('uid').val() === data.child('uid').val())) && newData.child('img').isString() && newData.child('img').val().beginsWith('data:image/') && newData.child('img').val().length < 200000"
     }
    }
   }
