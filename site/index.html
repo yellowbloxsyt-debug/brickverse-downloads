@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Brickverse">
 <meta name="format-detection" content="telephone=no">
 <title>Brickverse — build, script and play 3D games</title>
-<script>window.BV_VERSION="1.16.0";(function(){try{var q=new URLSearchParams(location.search),a=q.get("app");if(a==="android"||a==="windows")window.BV_APP=a;if(q.get("safe")){var o=JSON.parse(localStorage.getItem("bv_settings")||"{}");o.graphics="1";localStorage.setItem("bv_settings",JSON.stringify(o))}}catch(e){}})()</script>
+<script>window.BV_VERSION="1.16.1";(function(){try{var q=new URLSearchParams(location.search),a=q.get("app");if(a==="android"||a==="windows")window.BV_APP=a;if(q.get("safe")){var o=JSON.parse(localStorage.getItem("bv_settings")||"{}");o.graphics="1";localStorage.setItem("bv_settings",JSON.stringify(o))}}catch(e){}})()</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Cinzel:wght@700&family=Comic+Neue:wght@700&family=Creepster&family=Fredoka:wght@400;600&family=IM+Fell+English&family=Luckiest+Guy&family=Montserrat:wght@400;500;600;700;900&family=Orbitron:wght@600&family=Oswald:wght@500&family=Permanent+Marker&family=Press+Start+2P&family=Roboto&family=Roboto+Mono&family=Source+Sans+3:wght@300;400;600;700&family=Ubuntu&display=swap">
 <style>:root { --bg: #111318; --bg2: #191c23; --bg3: #22262f; --line: #2c313c; --text: #e8eaee; --dim: #9aa2b1; --blue: #1e88ff; --green: #2fbf71; --red: #ff4d4f; --radius: 10px; font-family: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif; }
@@ -861,6 +861,51 @@ body.bv-site .bv-details .by { color: #c9d3f2; text-shadow: 0 1px 6px rgba(0,0,0
 body.bv-site .lx-hero h1 { background: none; -webkit-text-fill-color: #fff; color: #fff; }
 body.bv-site .bv-play-btn { color: #04130b !important; }
 @media (max-width: 700px) { body.bv-site .bv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; } body.bv-site .bv-card:hover { transform: none; } body.bv-site .bv-card-name { font-size: 14px; } }
+
+/* animation editor + avatar animation pickers (restored: these styles were lost in 1.10) */
+/* ---------- animation editor ---------- */
+.bv-anim { position: fixed; inset: 0; z-index: 1500; background: rgba(0,0,0,.6); display: flex; align-items: center; justify-content: center; }
+.bv-anim-win { width: min(1180px, 97vw); height: min(760px, 95vh); background: #1b1e24; color: #e8eaee; border: 1px solid #2c313c; border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; font-size: 14px; }
+.bv-anim-head { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid #2c313c; flex-wrap: wrap; }
+.bv-anim-head .nm { width: 180px; }
+.bv-anim-head .len { width: 62px; }
+.bv-anim-head .sp { flex: 1; }
+.bv-anim-head label { display: flex; align-items: center; gap: 5px; color: #9aa2b1; }
+.bv-anim-body { flex: 1; display: flex; min-height: 0; }
+.bv-anim-view { flex: 1; position: relative; background: #000; cursor: grab; }
+.bv-anim-view canvas { width: 100%; height: 100%; display: block; }
+.bv-anim-side { width: 300px; border-left: 1px solid #2c313c; padding: 12px; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; }
+.bv-anim-side .lbl { color: #9aa2b1; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; margin-top: 6px; }
+.bv-anim-side .parts { display: flex; flex-wrap: wrap; gap: 6px; }
+.bv-anim-side .bv-chip { font-size: 13px; padding: 5px 10px; }
+.bv-anim-side .bv-chip.on { background: #1e88ff; color: #fff; border-color: #1e88ff; }
+.bv-anim-side .ax { display: grid; grid-template-columns: 18px 1fr 64px; align-items: center; gap: 8px; font-weight: 700; }
+.bv-anim-side .ax input[type=range] { accent-color: #1e88ff; }
+.bv-anim-side .row { display: flex; gap: 6px; flex-wrap: wrap; }
+.bv-anim-side .mine .it { display: flex; gap: 4px; margin-bottom: 4px; }
+.bv-anim-side .mine .it .bv-btn { flex: 1; justify-content: space-between; }
+.bv-anim-side .mine small { color: #9aa2b1; }
+.bv-anim-side .x { background: none; border: none; color: #9aa2b1; font-size: 18px; cursor: pointer; }
+.bv-anim-time { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-top: 1px solid #2c313c; }
+.bv-anim-time .track { flex: 1; height: 34px; background: #111318; border: 1px solid #2c313c; border-radius: 6px; position: relative; cursor: pointer; background-image: repeating-linear-gradient(90deg, #2c313c 0 1px, transparent 1px 10%); }
+.bv-anim-time .keys i { position: absolute; top: 50%; width: 13px; height: 13px; background: #ffb84d; transform: translate(-50%, -50%) rotate(45deg); border: 2px solid #111318; }
+.bv-anim-time .keys i.on { background: #1e88ff; box-shadow: 0 0 0 2px #fff; }
+.bv-anim-time .head { position: absolute; top: -3px; bottom: -3px; width: 2px; background: #ff4d4f; pointer-events: none; }
+.bv-anim-time .tlabel { font-family: 'Roboto Mono', monospace; color: #9aa2b1; min-width: 110px; }
+.bv-anim-foot { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-top: 1px solid #2c313c; justify-content: flex-end; }
+.bv-anim-foot .msg { flex: 1; color: #6cb6ff; }
+.bv-anim-foot .price { width: 70px; }
+.bv-anim-foot label { color: #9aa2b1; display: flex; align-items: center; gap: 6px; }
+.bv-av-anims { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.bv-av-anims label { display: flex; flex-direction: column; gap: 4px; font-weight: 600; }
+.bv-av-anims select { padding: 6px; }
+@media (max-width: 800px) { .bv-anim-body { flex-direction: column; } .bv-anim-side { width: auto; max-height: 45%; border-left: none; border-top: 1px solid #2c313c; } }/* glassy neon look for the editor */
+.bv-anim { background: rgba(4,5,12,.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.bv-anim-win { background: rgba(16,18,36,.92); border: 1px solid rgba(255,255,255,.12); border-radius: 20px; box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 50px rgba(139,92,255,.18); }
+.bv-anim-head, .bv-anim-time, .bv-anim-foot { border-color: rgba(255,255,255,.1) !important; }
+.bv-anim-side { border-color: rgba(255,255,255,.1); }
+.bv-anim-side .bv-chip.on { background: linear-gradient(135deg, #3df2ff, #8b5cff); color: #050612; border-color: transparent; box-shadow: 0 0 14px rgba(61,242,255,.4); }
+@media (max-width: 760px) { .bv-anim-body { flex-direction: column; } .bv-anim-side { width: auto; max-height: 42vh; border-left: 0; border-top: 1px solid rgba(255,255,255,.1); } .bv-anim-win { height: 100vh; width: 100vw; border-radius: 0; } }
 </style>
 </head>
 <body>
