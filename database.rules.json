@@ -89,6 +89,29 @@
      ".validate": "newData.hasChildren(['uid','img']) && (newData.child('uid').val() === auth.uid || (data.exists() && newData.child('uid').val() === data.child('uid').val())) && newData.child('img').isString() && newData.child('img').val().beginsWith('data:image/') && newData.child('img').val().length < 200000"
     }
    }
+  },
+  "catalog": {
+   ".read": true,
+   "$id": {
+    ".write": "auth != null && ((!(root.child('bans').child(auth.uid).exists() && root.child('bans').child(auth.uid).child('until').val() > now) && (!data.exists() || data.child('uid').val() === auth.uid)) || auth.token.email === 'w_dev@players.brickverse.app')",
+    ".validate": "newData.hasChildren(['name','uid','kind']) && (newData.child('uid').val() === auth.uid || (data.exists() && newData.child('uid').val() === data.child('uid').val())) && $id.beginsWith('ugc-') && $id.length <= 40 && newData.child('name').isString() && newData.child('name').val().length <= 40 && newData.child('creator').val() !== 'Brickverse' && (!newData.child('img').exists() || (newData.child('img').isString() && newData.child('img').val().length < 120000)) && (!newData.child('price').exists() || (newData.child('price').isNumber() && newData.child('price').val() >= 0 && newData.child('price').val() <= 1000))"
+   }
+  },
+  "toolbox": {
+   "list": {
+    ".read": true,
+    "$id": {
+     ".write": "auth != null && ((!(root.child('bans').child(auth.uid).exists() && root.child('bans').child(auth.uid).child('until').val() > now) && (!data.exists() || data.child('uid').val() === auth.uid)) || auth.token.email === 'w_dev@players.brickverse.app')",
+     ".validate": "newData.hasChildren(['name','uid','updated']) && (newData.child('uid').val() === auth.uid || (data.exists() && newData.child('uid').val() === data.child('uid').val())) && $id.length <= 40 && newData.child('name').isString() && newData.child('name').val().length <= 40 && (!newData.child('thumb').exists() || (newData.child('thumb').isString() && newData.child('thumb').val().length < 40000))"
+    }
+   },
+   "data": {
+    "$id": {
+     ".read": true,
+     ".write": "auth != null && ((!(root.child('bans').child(auth.uid).exists() && root.child('bans').child(auth.uid).child('until').val() > now) && (!data.exists() || data.child('uid').val() === auth.uid)) || auth.token.email === 'w_dev@players.brickverse.app')",
+     ".validate": "newData.hasChildren(['uid','data']) && (newData.child('uid').val() === auth.uid || (data.exists() && newData.child('uid').val() === data.child('uid').val())) && newData.child('data').isString() && newData.child('data').val().length < 1600000"
+    }
+   }
   }
  }
 }
